@@ -1,5 +1,5 @@
 imageio
-matplotlib==3.4.1
+matplotlib
 networkx
 numpy
 Pillow
