@@ -1,4 +1,4 @@
-major, minor, patch = (0, 1, 3)
+major, minor, patch = (0, 1, 4)
 __version__ = f"{major}.{minor}.{patch}"
 __author__ = "Unai Saralegui"
 __email__ = "usaralegui@gmail.com"

@@ -1,8 +1,8 @@
 import imageio
 import numpy as np
 import networkx as nx
-from skimage import measure, feature, segmentation
-from scipy import stats, ndimage
+from skimage import measure #, feature #, segmentation
+from scipy import stats #, ndimage
 
 
 from . import utils
@@ -92,26 +92,29 @@ class RplanData:
         return self._edges
 
     def get_interior_doors(self) -> np.array:
-        if self._interior_doors is not None:
-            return self._interior_doors
-        doors = []
-        category = 17  # InteriorDoor
-        mask = (self.category == category).astype(np.uint8)
-        distance = ndimage.morphology.distance_transform_cdt(mask)
-        local_maxi = (distance > 1).astype(np.uint8)
-        corner_measurement = feature.corner_harris(local_maxi)
-        local_maxi[corner_measurement > 0] = 0
-        markers = measure.label(local_maxi)
 
-        labels = segmentation.watershed(-distance, markers, mask=mask, connectivity=8)
-        regions = measure.regionprops(labels)
+        raise NotImplemented("This method uses skimage.segmentation, which throws an error when imported on TU cluster.")
 
-        for region in regions:
-            y0, x0, y1, x1 = np.array(region.bbox)
-            doors.append([y0, x0, y1, x1, category])
+        # if self._interior_doors is not None:
+        #     return self._interior_doors
+        # doors = []
+        # category = 17  # InteriorDoor
+        # mask = (self.category == category).astype(np.uint8)
+        # distance = ndimage.morphology.distance_transform_cdt(mask)
+        # local_maxi = (distance > 1).astype(np.uint8)
+        # corner_measurement = feature.corner_harris(local_maxi)
+        # local_maxi[corner_measurement > 0] = 0
+        # markers = measure.label(local_maxi)
 
-        self._interior_doors = np.array(doors, dtype=int)
-        return self._interior_doors
+        # labels = segmentation.watershed(-distance, markers, mask=mask, connectivity=8)
+        # regions = measure.regionprops(labels)
+
+        # for region in regions:
+        #     y0, x0, y1, x1 = np.array(region.bbox)
+        #     doors.append([y0, x0, y1, x1, category])
+
+        # self._interior_doors = np.array(doors, dtype=int)
+        # return self._interior_doors
 
     def get_rooms_with_properties(self) -> dict:
         """
